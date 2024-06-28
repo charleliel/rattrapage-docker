@@ -1,5 +1,7 @@
 FROM php:8.2-apache
 
+ARG NEXTCLOUD_VERSION=29.0.3
+
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -14,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite headers env dir mime
 
-RUN curl -fsSL -o nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/nextcloud-29.0.3.tar.bz2 \
+RUN curl -fsSL -o nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
     && tar -xjf nextcloud.tar.bz2 -C /var/www/html/ \
     && rm nextcloud.tar.bz2 \
     && chown -R www-data:www-data /var/www/html/nextcloud
