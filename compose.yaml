@@ -1,0 +1,31 @@
+services:
+  nextcloud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:80
+    volumes:
+      - nextcloud_data:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud_password
+
+  db:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud_password
+
+volumes:
+  nextcloud_data:
+  db_data:
